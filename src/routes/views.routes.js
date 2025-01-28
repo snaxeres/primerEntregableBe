@@ -11,6 +11,16 @@ router.get("/", (req, res) => {
   }
 });
 
+router.get("/register", (req, res) => {
+  const isSession = req.session.user ? true : false;
+
+  if (isSession) {
+    return res.redirect("/");
+  }
+
+  res.render("register", { title: "Register" });
+});
+
 router.get("/current", authenticate, (req, res) => {
   if (req.user) {
     res.render("current", { user: req.user });

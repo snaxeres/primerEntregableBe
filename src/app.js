@@ -8,6 +8,7 @@ import cartRouter from './routes/carts.router.js';
 import passport from "passport";
 import  routes  from "./routes/auth.routes.js";
 import viewsRoutes from "./routes/views.routes.js";
+import { sessionRoutes}  from "./routes/session.routes.js";
 import { userRouter } from "./routes/user.routes.js";
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
@@ -43,6 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", indexRoutes);
 app.use("/", viewsRoutes);
+app.use("/api/sessions", sessionRoutes);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 
