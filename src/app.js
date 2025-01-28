@@ -1,11 +1,13 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import indexRoutes from "./routes/index.routes.js";
 import { initializePassport } from "./config/passport.config.js";
 import cookieParser from "cookie-parser";
 import productRouter from './routes/products.router.js';
 import cartRouter from './routes/carts.router.js';
 import passport from "passport";
-import { authRouter } from "./routes/auth.routes.js";
+import  routes  from "./routes/auth.routes.js";
+import viewsRoutes from "./routes/views.routes.js";
 import { userRouter } from "./routes/user.routes.js";
 import { engine } from 'express-handlebars';
 import { Server } from 'socket.io';
@@ -39,11 +41,12 @@ initializePassport();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
+app.use("/api", indexRoutes);
+app.use("/", viewsRoutes);
 app.use('/api/products', productRouter);
 app.use('/api/carts', cartRouter);
 
-app.use("/api/auth", authRouter);
+app.use("/api/auth", routes);
 app.use(
   "/api/users",
   passport.authenticate("jwt", { session: false }),

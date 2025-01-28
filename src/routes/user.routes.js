@@ -7,3 +7,5 @@ userRouter.get("/", async (req, res) => {
   const users = await userModel.find();
   res.json(users);
 });
+
+

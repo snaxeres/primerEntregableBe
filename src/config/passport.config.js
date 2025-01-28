@@ -2,9 +2,9 @@ import passport from "passport";
 import { Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import { Strategy as LocalStrategy } from "passport-local";
 
-import { createToken, SECRET } from "../utils/jwt.utils.js";
+import { generateToken, verifyToken } from "../utils/jwtFunction.js";
 import { userModel } from "../models/user.model.js";
-import { comparePassword } from "../utils/password.utils.js";
+import { verifyPassword } from "../utils/hashFunctions.js";
 
 export function initializePassport() {
   passport.use(
@@ -52,7 +52,7 @@ export function initializePassport() {
 
           if (!user) return done(null, false, { message: "User not found" });
 
-          const isValidPassword = await comparePassword(
+          const isValidPassword = await verifyPassword(
             password,
             user.password
           );
@@ -60,7 +60,7 @@ export function initializePassport() {
           if (!isValidPassword)
             return done(null, false, { message: "Invalid password" });
 
-          const token = createToken({
+          const token = generateToken({
             id: user.id,
             email: user.email,
             role: user.role,
@@ -80,7 +80,7 @@ export function initializePassport() {
     "jwt",
     new JWTStrategy(
       {
-        secretOrKey: SECRET,
+        secretOrKey: verifyToken,
         jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
       },
       async (payload, done) => {
