@@ -12,7 +12,10 @@ router.get("/", (req, res) => {
 });
 
 router.get("/register", (req, res) => {
+
+  
   const isSession = req.session.user ? true : false;
+  
 
   if (isSession) {
     return res.redirect("/");
